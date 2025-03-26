@@ -5,5 +5,13 @@
  * @returns {object} - returns the new object
  */
 export const omit = (obj, ...fields) => {
+  const objUnmatched = {};
 
+  for (const [key, _] of Object.entries(obj)) {
+    if (!fields.includes(key)) {
+      objUnmatched[key] = obj[key];
+    }
+  }
+
+  return objUnmatched;
 };
