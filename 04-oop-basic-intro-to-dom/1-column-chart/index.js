@@ -3,59 +3,59 @@ export default class ColumnChart {
     chartHeight = 50;
 
     constructor({
-                    data = [],
-                    label = '',
-                    value = 0,
-                    link = '',
-                    formatHeading = value => value,
-                } = {}) {
-        this.data = data;
-        this.label = label;
-        this.value = value;
-        this.link = link;
-        this.formatHeading = formatHeading;
-        this.element = this.createElement(this.createTemplate());
+      data = [],
+      label = '',
+      value = 0,
+      link = '',
+      formatHeading = value => value,
+    } = {}) {
+      this.data = data;
+      this.label = label;
+      this.value = value;
+      this.link = link;
+      this.formatHeading = formatHeading;
+      this.element = this.createElement(this.createTemplate());
     }
 
     createElement(template) {
-        const element = document.createElement('div');
+      const element = document.createElement('div');
 
-        element.innerHTML = template;
+      element.innerHTML = template;
 
-        return element.firstElementChild;
+      return element.firstElementChild;
     }
 
     createLinkTemplate() {
-        if(this.link) {
-            return `<a href="${this.link}" class="column-chart__link">View all</a>`
-        }
-        return '';
+      if (this.link) {
+        return `<a href="${this.link}" class="column-chart__link">View all</a>`;
+      }
+      return '';
     }
 
     getColumnProps() {
-        const maxValue = Math.max(...this.data);
-        const scale = 50 / maxValue;
+      const maxValue = Math.max(...this.data);
+      const scale = 50 / maxValue;
 
-        return this.data.map(item => {
-            return {
-                percent: (item / maxValue * 100).toFixed(0) + '%',
-                value: String(Math.floor(item * scale))
-            };
-        });
+      return this.data.map(item => {
+        return {
+          percent: (item / maxValue * 100).toFixed(0) + '%',
+          value: String(Math.floor(item * scale))
+        };
+      });
     }
 
     createChartBodyTemplate() {
-        return this.getColumnProps().map(({ value, percent }) => (
-            `<div style="--value: ${value}" data-tooltip="${percent}"></div>`
-        )).join('');
+      return this.getColumnProps().map(({ value, percent }) => (
+        `<div style="--value: ${value}" data-tooltip="${percent}"></div>`
+      )).join('');
     }
 
     createChartClasses() {
-        return this.data.length ? 'column-chart' : 'column-chart column-chart_loading';
+      return this.data.length ? 'column-chart' : 'column-chart column-chart_loading';
     }
 
     createTemplate() {
-        return (`
+      return (`
             <div class="${this.createChartClasses()}" style="--chart-height: ${this.chartHeight}">
               <div class="column-chart__title">
                 ${this.label}
@@ -68,20 +68,20 @@ export default class ColumnChart {
                 </div>
               </div>
             </div>
-        `)
+        `);
     }
 
     update(newData) {
-        this.data = newData;
-        this.element.querySelector('[data-element="body"]').innerHTML = this.createChartBodyTemplate();
+      this.data = newData;
+      this.element.querySelector('[data-element="body"]').innerHTML = this.createChartBodyTemplate();
     }
 
     remove() {
-        this.element.remove();
+      this.element.remove();
     }
 
     destroy() {
-        this.remove();
+      this.remove();
     }
 
 }
