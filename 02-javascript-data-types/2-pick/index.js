@@ -5,10 +5,13 @@
  * @returns {object} - returns the new object
  */
 export const pick = (obj, ...fields) => {
-    function Pick(objParam, fieldsParam) {
-        fieldsParam.forEach((el) => {
-            this[el] = objParam[el];
-        });
+    const objMatched = {};
+
+    for(const [key, _] of Object.entries(obj)) {
+        if (fields.includes(key)) {
+            objMatched[key] = obj[key];
+        }
     }
-    return new Pick(obj, fields);
+
+    return objMatched;
 };
