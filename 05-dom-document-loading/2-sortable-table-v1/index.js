@@ -38,17 +38,15 @@ export default class SortableTable {
   createTableBodyRowTemplate(product) {
     return `
             <a href="/products/${product.id}" class="sortable-table__row">
-                ${this.config.map(columnConfig =>
-      this.createTableBodyCellTemplate(product, columnConfig)
-    ).join('')}
+                ${this.config.map(columnConfig => this.createTableBodyCellTemplate(product, columnConfig)).join('')}
             </a>
-        `
+        `;
   }
 
   createTableBodyTemplate() {
     return this.data.map(product => (
       this.createTableBodyRowTemplate(product)
-    )).join('')
+    )).join('');
   }
 
   template() {
@@ -83,12 +81,12 @@ export default class SortableTable {
     }
     else if (currentFieldType === "string") {
       this.data.sort((next, prev) => {
-        return order === "asc" ? this.sortStringsAsc(next[field], prev[field]) : this.sortStringsDesc(next[field], prev[field])
+        return order === "asc" ? this.sortStringsAsc(next[field], prev[field]) : this.sortStringsDesc(next[field], prev[field]);
       });
     }
     else if (currentFieldType === "number") {
       this.data.sort((next, prev) => {
-        return order === "asc" ? this.sortNumberAsc(next[field], prev[field]) : this.sortNumberDesc(next[field], prev[field])
+        return order === "asc" ? this.sortNumberAsc(next[field], prev[field]) : this.sortNumberDesc(next[field], prev[field]);
       });
     }
     else {
