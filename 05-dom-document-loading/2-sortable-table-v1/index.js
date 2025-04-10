@@ -38,7 +38,9 @@ export default class SortableTable {
   createTableBodyRowTemplate(product) {
     return `
             <a href="/products/${product.id}" class="sortable-table__row">
-                ${this.config.map(columnConfig => this.createTableBodyCellTemplate(product, columnConfig)).join('')}
+                ${this.config.map(columnConfig =>
+    this.createTableBodyCellTemplate(product, columnConfig)
+  ).join('')}
             </a>
         `;
   }
@@ -71,49 +73,28 @@ export default class SortableTable {
 
   sort(field, order = 'asc') {
     const currentField = this.config.find((el) => el.id === field);
-    const currentFieldType = currentField.sortType;
-    const isCurrentFieldSortable = currentField.sortable;
+    const k = order === 'asc' ? 1 : -1;
 
     this.selectSubElements();
 
-    if (!isCurrentFieldSortable) {
-      return;
-    }
-    else if (currentFieldType === "string") {
-      this.data.sort((next, prev) => {
-        return order === "asc" ? this.sortStringsAsc(next[field], prev[field]) : this.sortStringsDesc(next[field], prev[field]);
-      });
-    }
-    else if (currentFieldType === "number") {
-      this.data.sort((next, prev) => {
-        return order === "asc" ? this.sortNumberAsc(next[field], prev[field]) : this.sortNumberDesc(next[field], prev[field]);
-      });
-    }
-    else {
+    if (!currentField.sortable) {
       return;
     }
 
+    if (currentField.sortType === "string") {
+      this.data.sort((a, b) => k * a[field].localeCompare(b[field], ["ru", "eng"], { caseFirst: 'upper' }));
+    } else if (currentField.sortType === "number") {
+      this.data.sort((a, b) => k * a[field] - k * b[field]);
+    }
+
+    this.update();
+  }
+
+  update() {
     this.subElements.body.innerHTML = this.createTableBodyTemplate();
-  }
-
-  sortStringsAsc(a, b) {
-    return a.localeCompare(b, ['ru', 'en'], {caseFirst: 'upper'});
-  }
-
-  sortStringsDesc(b, a) {
-    return a.localeCompare(b, ['ru', 'en'], {caseFirst: 'upper'});
-  }
-
-  sortNumberAsc(a, b) {
-    return a - b;
-  }
-
-  sortNumberDesc(a, b) {
-    return b - a;
   }
 
   destroy() {
     this.element.remove();
   }
 }
-
