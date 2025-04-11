@@ -4,9 +4,9 @@ export default class NotificationMessage {
     duration = 0;
 
     constructor(message, options) {
-        this.duration = options?.duration;
-        this.element.className = `notification ${options?.type}`;
-        this.element.innerHTML = `
+      this.duration = options?.duration;
+      this.element.className = `notification ${options?.type}`;
+      this.element.innerHTML = `
             <div class="timer"></div>
             <div class="inner-wrapper">
                 <div class="notification-header">${options?.type}</div>
@@ -15,28 +15,28 @@ export default class NotificationMessage {
                 </div>
             </div>
         `;
-        this.element.style.setProperty("--value", this.duration + "ms");
+      this.element.style.setProperty("--value", this.duration + "ms");
     }
 
     show(body = document.body) {
-        if (NotificationMessage.lastShownComponent) {
-            NotificationMessage.lastShownComponent.remove();
-        }
-        NotificationMessage.lastShownComponent = this;
+      if (NotificationMessage.lastShownComponent) {
+        NotificationMessage.lastShownComponent.remove();
+      }
+      NotificationMessage.lastShownComponent = this;
 
-        body.append(this.element);
+      body.append(this.element);
 
-        this.timerId = setTimeout(() => {
-            this.remove();
-        }, this.duration);
+      this.timerId = setTimeout(() => {
+        this.remove();
+      }, this.duration);
     }
 
     remove() {
-        this.element.remove();
+      this.element.remove();
     }
 
     destroy() {
-        clearTimeout(this.timerId);
-        this.remove();
+      clearTimeout(this.timerId);
+      this.remove();
     }
 }
