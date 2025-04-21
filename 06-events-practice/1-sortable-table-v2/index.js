@@ -44,7 +44,9 @@ export default class SortableTableV2 extends SortableTable {
   }
 
   sortHandler = (evt) => {
-    this.sort(evt.currentTarget.dataset.id, evt.currentTarget.dataset.order === 'desc' ? 'asc' : 'desc');
+    if (evt.currentTarget.dataset.sortable) {
+      this.sort(evt.currentTarget.dataset.id, evt.currentTarget.dataset.order === 'desc' ? 'asc' : 'desc');
+    }
   };
 
   destroy() {
